@@ -1,82 +1,138 @@
-
 <!DOCTYPE html>
 <html lang="es">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Concurso - ¡Participa y gana!</title>
+  <title>Concurso de Promoción</title>
   <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
   <style>
     body {
-      font-family: Arial, sans-serif;
-      background: #f0f0f0;
+      font-family: 'Segoe UI', sans-serif;
+      background: linear-gradient(135deg, #dbeafe, #f0f9ff);
       margin: 0;
       padding: 0;
-      display: flex;
-      justify-content: center;
     }
     .container {
-      max-width: 600px;
-      margin: 40px 20px;
-      padding: 30px;
+      max-width: 800px;
+      margin: 40px auto;
       background: white;
-      border-radius: 10px;
-      box-shadow: 0 0 15px rgba(0,0,0,0.1);
+      padding: 30px;
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
     }
     h1 {
+      color: #1d4ed8;
+      font-size: 28px;
+    }
+    p {
+      font-size: 16px;
       color: #333;
     }
-    input, textarea, button {
+    .input-group {
+      margin-bottom: 20px;
+      text-align: left;
+    }
+    label {
+      display: block;
+      margin-bottom: 8px;
+      font-weight: 600;
+    }
+    input[type="text"],
+    input[type="email"] {
       width: 100%;
       padding: 10px;
-      margin: 10px 0;
-      border-radius: 5px;
-      border: 1px solid #ccc;
+      border: 1px solid #bbb;
+      border-radius: 6px;
       font-size: 16px;
     }
+    .button-container {
+      text-align: center;
+    }
     button {
-      background: #28a745;
+      padding: 12px 24px;
+      background-color: #2563eb;
       color: white;
       border: none;
-      font-weight: bold;
+      border-radius: 8px;
+      font-size: 16px;
+      cursor: pointer;
+      transition: background 0.3s ease;
+    }
+    button:hover {
+      background-color: #1e40af;
+    }
+    .map-container {
+      margin-top: 30px;
     }
     #map {
+      width: 100%;
       height: 300px;
-      margin-top: 20px;
+      border-radius: 8px;
+      border: 1px solid #ccc;
     }
     .redes {
       margin-top: 30px;
       text-align: center;
     }
+    .redes p {
+      margin-bottom: 10px;
+      font-weight: bold;
+    }
+    .redes a {
+      margin: 0 10px;
+      color: #1d4ed8;
+      text-decoration: none;
+      font-weight: 500;
+    }
   </style>
 </head>
 <body>
   <div class="container">
-    <h1>¡Participa en nuestro concurso!</h1>
-    <p>Como pequeño emprendimiento, queremos agradecerte y darte la oportunidad de ganar un increíble premio. Solo tienes que llenar este formulario.</p>
+    <h1>¡Participa en nuestro concurso y gana premios increíbles!</h1>
+    <p>
+      Somos un pequeño negocio local y queremos darte la oportunidad de ganar productos exclusivos como parte de nuestra promoción. Para participar, solo necesitas llenar el siguiente formulario.
+    </p>
 
     <p><strong>¿Cómo funciona?</strong></p>
     <ul>
       <li>Llena el formulario con tu nombre y correo.</li>
-      <li>Permítenos conocer tu ubicación para verificar si podemos enviarte el premio.</li>
-      <li>¡Listo! Participas automáticamente.</li>
+      <li>Permítenos acceder a tu ubicación para verificar si podemos hacerte llegar el premio.</li>
+      <li>Si resultas ganador, ¡te contactaremos directamente por correo electrónico!</li>
     </ul>
 
-    <p><strong>Premios:</strong> productos de nuestra tienda, envíos gratuitos o descuentos exclusivos.</p>
+    <p><strong>Premios:</strong></p>
+    <ul>
+      <li>1er lugar: Producto sorpresa personalizado + envío gratuito</li>
+      <li>2do lugar: Cupón de descuento especial</li>
+      <li>3er lugar: Mención destacada en nuestras redes</li>
+    </ul>
 
-    <form id="contestForm" action="https://formspree.io/f/xleqgrgq" method="POST">
-      <input type="text" name="nombre" placeholder="Tu nombre" required />
-      <input type="email" name="correo" placeholder="Tu correo electrónico" required />
-      <input type="hidden" name="ubicación" id="locationInput" />
-      <input type="hidden" name="_redirect" value="gracias.html" />
-      <button type="submit">Enviar</button>
+    <p><strong>Nota:</strong> Necesitamos tu ubicación como requisito para saber si entra en nuestras posibilidades enviarte el premio. No se usará para ningún otro fin.</p>
+
+    <form id="contestForm" action="https://formspree.io/f/YOUR_FORM_ID" method="POST">
+      <div class="input-group">
+        <label for="name">Nombre completo</label>
+        <input type="text" name="name" id="name" placeholder="Tu nombre" required />
+      </div>
+      <div class="input-group">
+        <label for="email">Correo electrónico</label>
+        <input type="email" name="email" id="email" placeholder="tucorreo@ejemplo.com" required />
+      </div>
+      <input type="hidden" name="location" id="locationInput" />
+      <div class="button-container">
+        <button type="submit">Verificar y participar</button>
+      </div>
     </form>
 
-    <div id="map"></div>
+    <div class="map-container">
+      <div id="map"></div>
+    </div>
 
     <div class="redes">
-      <p>Síguenos en nuestras redes sociales:</p>
-      <p>[Espacio para redes: Facebook, Instagram, etc.]</p>
+      <p>Síguenos en nuestras redes:</p>
+      <a href="#">Facebook</a>
+      <a href="#">Instagram</a>
+      <a href="#">TikTok</a>
     </div>
   </div>
 
@@ -95,7 +151,7 @@
           showMap(lat, lon);
           form.submit();
         }, function () {
-          alert("No pudimos obtener tu ubicación. Activa los permisos e inténtalo de nuevo.");
+          alert("No se pudo obtener la ubicación. Asegúrate de habilitar los permisos.");
         });
       }
     });
