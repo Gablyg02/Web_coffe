@@ -1,0 +1,114 @@
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Concurso - ¡Participa y gana!</title>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f0f0f0;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      justify-content: center;
+    }
+    .container {
+      max-width: 600px;
+      margin: 40px 20px;
+      padding: 30px;
+      background: white;
+      border-radius: 10px;
+      box-shadow: 0 0 15px rgba(0,0,0,0.1);
+    }
+    h1 {
+      color: #333;
+    }
+    input, textarea, button {
+      width: 100%;
+      padding: 10px;
+      margin: 10px 0;
+      border-radius: 5px;
+      border: 1px solid #ccc;
+      font-size: 16px;
+    }
+    button {
+      background: #28a745;
+      color: white;
+      border: none;
+      font-weight: bold;
+    }
+    #map {
+      height: 300px;
+      margin-top: 20px;
+    }
+    .redes {
+      margin-top: 30px;
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>¡Participa en nuestro concurso!</h1>
+    <p>Como pequeño emprendimiento, queremos agradecerte y darte la oportunidad de ganar un increíble premio. Solo tienes que llenar este formulario.</p>
+
+    <p><strong>¿Cómo funciona?</strong></p>
+    <ul>
+      <li>Llena el formulario con tu nombre y correo.</li>
+      <li>Permítenos conocer tu ubicación para verificar si podemos enviarte el premio.</li>
+      <li>¡Listo! Participas automáticamente.</li>
+    </ul>
+
+    <p><strong>Premios:</strong> productos de nuestra tienda, envíos gratuitos o descuentos exclusivos.</p>
+
+    <form id="contestForm" action="https://formspree.io/f/xleqgrgq" method="POST">
+      <input type="text" name="nombre" placeholder="Tu nombre" required />
+      <input type="email" name="correo" placeholder="Tu correo electrónico" required />
+      <input type="hidden" name="ubicación" id="locationInput" />
+      <input type="hidden" name="_redirect" value="gracias.html" />
+      <button type="submit">Enviar</button>
+    </form>
+
+    <div id="map"></div>
+
+    <div class="redes">
+      <p>Síguenos en nuestras redes sociales:</p>
+      <p>[Espacio para redes: Facebook, Instagram, etc.]</p>
+    </div>
+  </div>
+
+  <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+  <script>
+    const form = document.getElementById('contestForm');
+    const locationInput = document.getElementById('locationInput');
+
+    form.addEventListener('submit', function (e) {
+      if (navigator.geolocation) {
+        e.preventDefault();
+        navigator.geolocation.getCurrentPosition(function (position) {
+          const lat = position.coords.latitude;
+          const lon = position.coords.longitude;
+          locationInput.value = `Latitud: ${lat}, Longitud: ${lon}`;
+          showMap(lat, lon);
+          form.submit();
+        }, function () {
+          alert("No pudimos obtener tu ubicación. Activa los permisos e inténtalo de nuevo.");
+        });
+      }
+    });
+
+    function showMap(lat, lon) {
+      const map = L.map('map').setView([lat, lon], 13);
+      L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '© OpenStreetMap contributors'
+      }).addTo(map);
+      L.marker([lat, lon]).addTo(map)
+        .bindPopup('Tu ubicación')
+        .openPopup();
+    }
+  </script>
+</body>
+</html>
